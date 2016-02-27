@@ -29,6 +29,58 @@ function handler(request,response){
 			});
 			request.on('end',function(){
 				var parsedData = querystring.parse(dataStream);
+				var postsPath = path.resolve(__dirname,"./posts.json");
+				var currFile;
+				console.log(postsPath);
+				fs.exists(postsPath, function(ok){
+					if(ok){
+						fs.readFile(postsPath,'utf-8',function(error,file){
+							if(error){
+								console.log(error);
+								return;
+							}
+							// console.log("heeeeeyyy grrrl");
+
+							console.log(file);
+							currFile = file.toString();
+
+							var dateNow = Date.now()+"";
+
+
+							var myObject = JSON.parse(currFile);
+							myObject[dateNow]=parsedData.post;
+							currFile = JSON.stringify(myObject);
+
+							console.log("After add: "+currFile);
+
+
+							///WRITE FILE
+
+							fs.writeFile(postsPath, currFile,function(error){
+								if(error){
+									console.log(error);
+									return;
+								}
+								
+				});
+
+
+
+
+
+
+						});
+				}
+					else{
+						console.log("file not found");
+					}
+					
+				});
+				
+				
+
+				
+					
 				console.log("Blog Post:"+JSON.stringify(parsedData));
 				response.end();
 			});
