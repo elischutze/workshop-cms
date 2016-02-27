@@ -2,7 +2,7 @@
 var http = require('http');
 var fs = require('fs');
 
-var message = "This is a message. #nodegirlsldn rocks!"
+var message = "This is a message. #nodegirlsldn rocks!";
 
 function handler (request,response) {
 	
@@ -12,16 +12,19 @@ function handler (request,response) {
 
 	var endpoint = request.url;
 	console.log(endpoint);
+	// var type = endpoint[:-3];
+	// console.log("Req: "+JSON.stringify(request));
+
 	if (endpoint==="/"){
 		response.writeHead(200, {"Content-Type":"text/html"});
 
 		fs.readFile(__dirname+'/public/index.html', function(error,file){
 			if (error) {
-				console.log(error)
+				console.log(error);
 				return;
 			}
 			response.end(file);
-		})
+		});
 
 	}
 
@@ -34,9 +37,14 @@ function handler (request,response) {
 		response.write("this is girls!!!");
 		response.end();
 	}else {
-	response.writeHead(200, {"Content-Type": "text/html"});
-	response.write(message);
-	response.end();
+	//response.writeHead(200, {"Content-Type": "text/html"});
+	fs.readFile(__dirname+'/public'+endpoint, function(error,file){
+				if (error) {
+					console.log(error);
+					return;
+				}
+				response.end(file);
+			});
 	}
 }
 
