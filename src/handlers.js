@@ -21,6 +21,23 @@ function handler(request,response){
 		});
 		break;
 
+		case '/posts':
+		var postsPath = path.resolve(__dirname,"./posts.json");
+			
+			fs.readFile(postsPath,function(error,file){
+							if(error){
+								console.log(error);
+								return;
+							}
+							console.log("inside readfile");
+						response.writeHead(200, {"Content-Type":"text/json"});
+						response.write(file);
+						response.end();
+					});
+			
+
+		break;
+
 		case '/create/post':
 			response.writeHead(303, {"Location":"/"});
 			var dataStream = '';

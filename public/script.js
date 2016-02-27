@@ -4,6 +4,8 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(data) {
 
+            console.log("success!");
+
             for (var blogPost in data) {
                 var postDiv         = document.createElement('div');
                 var postText        = document.createElement('p');
