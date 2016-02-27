@@ -1,6 +1,8 @@
 var http=require('http');
 var fs=require('fs');
 var path=require('path');
+var querystring=require('querystring');
+
 
 
 
@@ -17,6 +19,22 @@ function handler(request,response){
 			}
 			response.end(file); 
 		});
+		break;
+
+		case '/create/post':
+			response.writeHead(303, {"Location":"/"});
+			var dataStream = '';
+			request.on('data',function(data){
+				dataStream += data;
+			});
+			request.on('end',function(){
+				var parsedData = querystring.parse(dataStream);
+				console.log("Blog Post:"+JSON.stringify(parsedData));
+				response.end();
+			});
+
+
+
 		break;
 
 		default:
