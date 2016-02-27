@@ -23,7 +23,7 @@ function handler (request,response) {
 				console.log(error);
 				return;
 			}
-			response.end(file);
+			response.end(file); 
 		});
 
 	}
