@@ -1,12 +1,43 @@
 
 var http = require('http');
+var fs = require('fs');
 
 var message = "This is a message. #nodegirlsldn rocks!"
 
 function handler (request,response) {
+	
+
+	var method = request.method;
+	console.log(method);
+
+	var endpoint = request.url;
+	console.log(endpoint);
+	if (endpoint==="/"){
+		response.writeHead(200, {"Content-Type":"text/html"});
+
+		fs.readFile(__dirname+'/public/index.html', function(error,file){
+			if (error) {
+				console.log(error)
+				return;
+			}
+			response.end(file);
+		})
+
+	}
+
+	else if(endpoint==="/node"){
+		response.writeHead(200, {"Content-Type": "text/html"});
+		response.write("this is node!!");
+		response.end();
+	} else if (endpoint==="/girls"){
+		response.writeHead(200, {"Content-Type": "text/html"});
+		response.write("this is girls!!!");
+		response.end();
+	}else {
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write(message);
 	response.end();
+	}
 }
 
 var server = http.createServer(handler);
