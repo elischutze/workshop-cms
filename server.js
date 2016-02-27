@@ -1,6 +1,7 @@
 
 var http = require('http');
 var fs = require('fs');
+var querystring=require('querystring');
 
 var message = "This is a message. #nodegirlsldn rocks!";
 
@@ -15,7 +16,8 @@ function handler (request,response) {
 	// var type = endpoint[:-3];
 	// console.log("Req: "+JSON.stringify(request));
 
-	if (endpoint==="/"){
+	switch (endpoint){
+		case "/":
 		response.writeHead(200, {"Content-Type":"text/html"});
 
 		fs.readFile(__dirname+'/public/index.html', function(error,file){
@@ -25,18 +27,35 @@ function handler (request,response) {
 			}
 			response.end(file); 
 		});
+		break;
+	
 
-	}
-
-	else if(endpoint==="/node"){
+	case "/node":
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write("this is node!!");
 		response.end();
-	} else if (endpoint==="/girls"){
+		break;
+
+	case "/girls":
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write("this is girls!!!");
 		response.end();
-	}else {
+		break;
+
+	case "/create-post":
+	var allTheData='';
+	request.on('data', function (chunckOfData){
+		allTheData+= chunckOfData;
+	});
+	request.on('end',function(){
+		var convertedData=querystring.parse(allTheData);
+		console.log(convertedData);
+		response.writeHead(303, {"Location": "/"});
+		response.end();
+	});
+	break;
+
+	default:
 	//response.writeHead(200, {"Content-Type": "text/html"});
 	fs.readFile(__dirname+'/public'+endpoint, function(error,file){
 				if (error) {
